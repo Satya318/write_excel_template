@@ -1,6 +1,7 @@
 package itr6.template.poc;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +18,6 @@ import java.util.Map;
 @Slf4j
 public class SpringBootApp implements CommandLineRunner {
   private static final String[] SHEETS_TO_READ = new String[]{"PART A - GENERAL", "GENERAL2", "NATURE OF BUSINESS"};
-  //private static final String[] SHEETS_TO_READ = new String[]{"GENERAL2"};
 
   @Value("${config.location}")
   private String configFile;
@@ -54,7 +54,7 @@ public class SpringBootApp implements CommandLineRunner {
         }
         Cell fieldNameCell = row.getCell(0);
         Cell indexCell = row.getCell(1);
-        if (fieldNameCell != null && indexCell != null) {
+        if (fieldNameCell != null && indexCell != null && StringUtils.isNotBlank(fieldNameCell.getStringCellValue())) {
           indexConfigurations.put(fieldNameCell.getStringCellValue(), indexCell.getStringCellValue());
         }
       }
@@ -69,7 +69,7 @@ public class SpringBootApp implements CommandLineRunner {
         }
         Cell fieldNameCell = row.getCell(0);
         Cell valueCell = row.getCell(1);
-        if (fieldNameCell != null && valueCell != null) {
+        if (fieldNameCell != null && valueCell != null && StringUtils.isNotBlank(fieldNameCell.getStringCellValue())) {
           dataMap.put(fieldNameCell.getStringCellValue(), valueCell.getStringCellValue());
         }
       }
